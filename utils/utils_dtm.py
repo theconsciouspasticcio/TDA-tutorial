@@ -153,7 +153,7 @@ def DTMFiltration(X, m, p, dimension_max=2, filtration_max=np.inf):
 
 def AlphaDTMFiltration(X, m, p, dimension_max=2, filtration_max=np.inf):
     """
-    /!\ this is a heuristic method, that speeds-up the computation.
+    This is a heuristic method, that speeds-up the computation.
     It computes the DTM-filtration seen as a subset of the Delaunay filtration.
 
     Input:
@@ -174,14 +174,18 @@ def AlphaDTMFiltration(X, m, p, dimension_max=2, filtration_max=np.inf):
     DTM_values = DTM(X, Y, m)
 
     st = gudhi.SimplexTree()  # creates an empty simplex tree
-    for simplex in st_alpha.get_skeleton(2):  # adds vertices with corresponding filtration value
+    for simplex in st_alpha.get_skeleton(
+        2
+    ):  # adds vertices with corresponding filtration value
         if len(simplex[0]) == 1:
             i = simplex[0][0]
             st.insert([i], filtration=DTM_values[i])
         if len(simplex[0]) == 2:  # adds edges with corresponding filtration value
             i = simplex[0][0]
             j = simplex[0][1]
-            value = WeightedRipsFiltrationValue(p, DTM_values[i], DTM_values[j], distances[i][j])
+            value = WeightedRipsFiltrationValue(
+                p, DTM_values[i], DTM_values[j], distances[i][j]
+            )
             st.insert([i, j], filtration=value)
     st.expansion(dimension_max)  # expands the complex
     result_str = (
@@ -229,7 +233,9 @@ def SampleOnCircle(N_obs=100, N_out=0, is_plot=False):
         plt_obs = ax.scatter(X_obs, Y_obs, c="tab:cyan")
         plt_out = ax.scatter(X_out, Y_out, c="tab:orange")
         ax.axis("equal")
-        ax.set_title(str(N_obs) + "-sampling of the unit circle with " + str(N_out) + " outliers")
+        ax.set_title(
+            str(N_obs) + "-sampling of the unit circle with " + str(N_out) + " outliers"
+        )
         ax.legend((plt_obs, plt_out), ("data", "outliers"), loc="lower left")
     return data
 
@@ -296,8 +302,15 @@ def SampleOnNecklace(N_obs=100, N_out=0, is_plot=False):
 
     if is_plot:
         ax = plt.figure().add_subplot(projection="3d")
-        plt_obs = ax.scatter(data_obs[:, 0], data_obs[:, 1], data_obs[:, 2], c="tab:cyan")
+        plt_obs = ax.scatter(
+            data_obs[:, 0], data_obs[:, 1], data_obs[:, 2], c="tab:cyan"
+        )
         plt_out = ax.scatter(X_out, Y_out, Z_out, c="tab:orange")
-        ax.set_title(str(4 * N_obs) + "-sampling of the necklace with " + str(N_out) + " outliers")
+        ax.set_title(
+            str(4 * N_obs)
+            + "-sampling of the necklace with "
+            + str(N_out)
+            + " outliers"
+        )
         ax.legend((plt_obs, plt_out), ("data", "outliers"), loc="lower left")
     return data
